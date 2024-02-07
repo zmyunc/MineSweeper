@@ -13,9 +13,39 @@ let MineSweeperView = function (model, controller, render_div) {
       <div>Time Elapsed: <span id="elapsed_time">Elapsed time goes here</span></div>
       <div><button id="reset">Reset</button></div>
     </div>
-    <div class="field">Minefield Goes Here</div>
+    <div id="field">Minefield Goes Here</div>
     `;
+
+    let field_view = new MSFieldView(model, controller, render_div.querySelector('#field'));
 
     // Set up a getter for the div
     this.getRenderedDiv = () => render_div;
+}
+
+let MSFieldView = function(model, controller, render_div) {
+    if (render_div == undefined) {
+        render_div = document.createElement('div');
+    }
+
+    render_div.innerHTML = `
+    <table>
+      <tbody>
+      </tbody>
+    </table>
+    `;
+
+    let field_table_body = render_div.querySelector('tbody');
+    for (let row=0; row < model.height; row++) {
+        let row_tr = document.createElement('tr');
+        for (let col=0; col<model.width; col++) {
+            let cell_td = document.createElement('td');
+            cell_td.classList.add('cell');
+            row_tr.append(cell_td);
+        }
+        field_table_body.append(row_tr);
+    }
+
+    // Set up a getter for the div
+    this.getRenderedDiv = () => render_div;
+
 }
