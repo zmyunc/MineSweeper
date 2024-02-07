@@ -73,6 +73,15 @@ MineSweeperCell.prototype.toggleMark = function () {
     this.dispatchChangeCallbacks();
 }
 
+MineSweeperCell.prototype.reveal = function () {
+    if (this.isMarked() || this.isRevealed()) {
+        return;
+    }
+
+    this.state = MineSweeperCell.states.REVEALED;
+    this.dispatchChangeCallbacks();
+}
+
 MineSweeperCell.prototype.addChangeCallback = function (cb) {
     this.change_callbacks.push(cb);
 }

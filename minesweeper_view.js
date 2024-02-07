@@ -72,7 +72,11 @@ let MSCellView = function(x, y, model, controller, render_div) {
             if (cell.hasBomb()) {
                 render_div.innerHTML = 'X';
             } else {
-                render_div.innerHTML = cell.getNeighborBombCount();
+                let bomb_count = cell.getNeighborBombCount();
+                if (bomb_count != 0) {
+                    render_div.innerHTML = cell.getNeighborBombCount();
+                }
+                
                 render_div.addEventListener('click', (e) => {
                     controller.clearNeighborhood(x,y);
                 });

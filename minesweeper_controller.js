@@ -1,7 +1,9 @@
 let MineSweeperController = function (model) {
 
     this.reveal = (x,y) => {
-        alert(`Reveal ${x}, ${y}`);
+        let cell = model.getCell(x,y);
+
+        cell.reveal();
     }
 
     this.toggleMark = (x,y) => {
