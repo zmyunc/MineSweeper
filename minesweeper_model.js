@@ -12,7 +12,7 @@ let MineSweeperModel = function (width, height, bomb_count) {
     this.field.forAllCells(c => {
             all_cells.push([c, Math.random()]);
     });
-    
+
     all_cells.sort((a,b) => a[1]-b[1])
          .slice(0,this.bomb_count)
          .forEach(c => c[0].has_bomb = true);
@@ -28,7 +28,7 @@ let MineSweeperField = function(width, height) {
     }
 }
 
-MineSweeperField.forAllCells = function(fn) {
+MineSweeperField.prototype.forAllCells = function(fn) {
     this.cells.forEach(column => {
         column.forEach(cell => {
             fn(cell);
