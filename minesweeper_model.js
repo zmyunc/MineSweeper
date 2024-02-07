@@ -18,12 +18,18 @@ let MineSweeperModel = function (width, height, bomb_count) {
          .forEach(c => c[0].has_bomb = true);
 }
 
+MineSweeperModel.prototype.getCell = function (x, y) {
+    return this.field.cells[x][y];
+}
+
 let MineSweeperField = function(width, height) {
+    this.width = width;
+    this.height = height;
     this.cells = [];
     for (let x = 0; x < width; x++) {
         this.cells[x] = [];
         for (let y = 0; y < height; y++) {
-            this.cells[x][y] = new MineSweeperCell();
+            this.cells[x][y] = new MineSweeperCell(x,y, this);
         }
     }
 }
@@ -36,9 +42,42 @@ MineSweeperField.prototype.forAllCells = function(fn) {
     });
 }
 
-let MineSweeperCell = function() {
+let MineSweeperCell = function(x, y, field) {
     this.state = MineSweeperCell.states.UNMARKED;
     this.has_bomb = false;
+    this.x = x;
+    this.y = y;
+    this.field = field;
+}
+
+MineSweeperCell.prototype.isRevealed = function () {
+    return (this.state == MineSweeperCell.states.REVEALED);
+}
+
+MineSweeperCell.prototype.isMarked = function () {
+    return (this.state == MineSweeperCell.states.MARKED);
+}
+
+MineSweeperCell.prototype.hasBomb = function () {
+    return this.has_bomb;
+}
+
+MineSweeperCell.prototype.getNeighborBombCount = function () {
+    let count = 0;
+    for (let dx=-1; dx<=1; dx++) {
+        for (let dy=-1; dy<=1; dy++) {
+            if (dx != 0 || dy != 0) {
+                let nx = this.x + dx;
+                let ny = this.y + dy;
+                if ((nx >=0) && (nx < this.field.width) && (ny >= 0) && ny < (this.field.height)) {
+                    if (this.field.cells[nx][ny].has_bomb) {
+                        count++;
+                    }
+                }
+            }
+        }
+    }
+    return count;
 }
 
 MineSweeperCell.states = {

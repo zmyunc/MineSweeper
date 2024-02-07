@@ -40,6 +40,10 @@ let MSFieldView = function(model, controller, render_div) {
         for (let col=0; col<model.width; col++) {
             let cell_td = document.createElement('td');
             cell_td.classList.add('cell');
+
+            let cell_view = new MSCellView(col, row, model, controller);
+            cell_td.append(cell_view.getRenderedDiv());
+
             row_tr.append(cell_td);
         }
         field_table_body.append(row_tr);
@@ -48,4 +52,34 @@ let MSFieldView = function(model, controller, render_div) {
     // Set up a getter for the div
     this.getRenderedDiv = () => render_div;
 
+}
+
+let MSCellView = function(x, y, model, controller, render_div) {
+    if (render_div == undefined) {
+        render_div = document.createElement('div');
+    }
+
+    let cell = model.getCell(x,y);
+
+    let render = () => {
+        render_div.innerHTML = '';
+        if (cell.isRevealed()) {
+            if (cell.hasBomb()) {
+                render_div.innerHTML = 'X';
+            } else {
+                render_div.innerHTML = cell.getNeighborBombCount();
+            }
+        } else {
+            let cell_button = document.createElement('button');
+            cell_button.classList.add('cell');
+
+            if (cell.isMarked()) {
+                cell_button.innerHTML = "M";
+            }
+            render_div.append(cell_button);
+        }
+    }
+    render();
+
+    this.getRenderedDiv = () => render_div;
 }
