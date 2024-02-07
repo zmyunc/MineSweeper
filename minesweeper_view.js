@@ -73,6 +73,9 @@ let MSCellView = function(x, y, model, controller, render_div) {
                 render_div.innerHTML = 'X';
             } else {
                 render_div.innerHTML = cell.getNeighborBombCount();
+                render_div.addEventListener('click', (e) => {
+                    controller.clearNeighborhood(x,y);
+                });
             }
         } else {
             let cell_button = document.createElement('button');

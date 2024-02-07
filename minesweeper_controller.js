@@ -8,6 +8,10 @@ let MineSweeperController = function (model) {
         alert(`Toggle mark at ${x}, ${y}`);
     }
 
+    this.clearNeighborhood = (x,y) => {
+        alert(`Clear neighborhood at ${x}, ${y}`);
+    }
+
     this.reset = () => {
         alert(`Reset game`);
     }
