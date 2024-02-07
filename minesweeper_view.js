@@ -18,6 +18,11 @@ let MineSweeperView = function (model, controller, render_div) {
 
     let field_view = new MSFieldView(model, controller, render_div.querySelector('#field'));
 
+    // Connect reset button to controller
+    render_div.querySelector('#reset').addEventListener('click', () => {
+        controller.reset();
+    });
+
     // Set up a getter for the div
     this.getRenderedDiv = () => render_div;
 }
@@ -71,6 +76,14 @@ let MSCellView = function(x, y, model, controller, render_div) {
             }
         } else {
             let cell_button = document.createElement('button');
+            cell_button.addEventListener('click', (e) => {
+                if (e.shiftKey) {
+                    controller.toggleMark(x,y);
+                } else {
+                    controller.reveal(x,y);
+                }
+            });
+            
             cell_button.classList.add('cell');
 
             if (cell.isMarked()) {
