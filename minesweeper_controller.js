@@ -5,7 +5,9 @@ let MineSweeperController = function (model) {
     }
 
     this.toggleMark = (x,y) => {
-        alert(`Toggle mark at ${x}, ${y}`);
+        let cell = model.getCell(x,y);
+
+        cell.toggleMark();
     }
 
     this.clearNeighborhood = (x,y) => {
