@@ -83,7 +83,7 @@ let MSCellView = function(x, y, model, controller, render_div) {
                     controller.reveal(x,y);
                 }
             });
-            
+
             cell_button.classList.add('cell');
 
             if (cell.isMarked()) {
@@ -95,4 +95,6 @@ let MSCellView = function(x, y, model, controller, render_div) {
     render();
 
     this.getRenderedDiv = () => render_div;
+
+    cell.addChangeCallback(render);
 }

@@ -48,6 +48,7 @@ let MineSweeperCell = function(x, y, field) {
     this.x = x;
     this.y = y;
     this.field = field;
+    this.change_callbacks = [];
 }
 
 MineSweeperCell.prototype.isRevealed = function () {
@@ -56,6 +57,28 @@ MineSweeperCell.prototype.isRevealed = function () {
 
 MineSweeperCell.prototype.isMarked = function () {
     return (this.state == MineSweeperCell.states.MARKED);
+}
+
+MineSweeperCell.prototype.toggleMark = function () {
+    // Can't mark/unmark if already revealed.
+    if (this.isRevealed()) {
+        return;
+    }
+    if (this.isMarked()) {
+        this.state = MineSweeperCell.states.UNMARKED;
+    } else {
+        this.state = MineSweeperCell.states.MARKED;
+    }
+
+    this.dispatchChangeCallbacks();
+}
+
+MineSweeperCell.prototype.addChangeCallback = function (cb) {
+    this.change_callbacks.push(cb);
+}
+
+MineSweeperCell.prototype.dispatchChangeCallbacks = function () {
+    this.change_callbacks.forEach(cb => cb());
 }
 
 MineSweeperCell.prototype.hasBomb = function () {
