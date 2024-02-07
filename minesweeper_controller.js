@@ -1,0 +1,3 @@
+let MineSweeperController = function (model) {
+    
+}
