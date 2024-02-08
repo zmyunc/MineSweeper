@@ -1,16 +1,31 @@
 let MineSweeperController = function (model) {
 
     this.reveal = (x,y) => {
-        let cell = model.getCell(x,y);
-
-        if (!cell.isUnmarked()) {
-            // Either marked or already revealed. Don't do anything.
+        // Do nothing if the game is over.
+        if (model.gameFinished()) {
             return;
         }
 
+        // Start the game in case it wasn't already
+        model.startGame();
+
+        let cell = model.getCell(x,y);
+
+        if (cell.isRevealed()) {
+            // Already revealed. Do nothing and return.
+            return;
+        }
+        
         cell.reveal();
+
         // If this is a bomb, game is over. For now just put up an alert and return.
         if (cell.hasBomb()) {
+            model.field.forAllCells(c => {
+                if (c.hasBomb()) {
+                    c.reveal();
+                }
+            });
+            model.endGame();
             alert('You lose!');
             return;
         }
@@ -22,12 +37,28 @@ let MineSweeperController = function (model) {
     }
 
     this.toggleMark = (x,y) => {
+        // Do nothing if the game is over.
+        if (model.gameFinished()) {
+            return;
+        }
+
+        // Start the game in case it wasn't already
+        model.startGame();
+
         let cell = model.getCell(x,y);
 
         cell.toggleMark();
     }
 
     this.clearNeighborhood = (x,y) => {
+        // Do nothing if the game is over.
+        if (model.gameFinished()) {
+            return;
+        }
+
+        // Start the game in case it wasn't already
+        model.startGame();
+
         let cell = model.getCell(x,y);
 
         if (!cell.isRevealed() || cell.hasBomb()) {
