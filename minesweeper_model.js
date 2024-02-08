@@ -4,9 +4,8 @@ let MineSweeperModel = function (width, height, bomb_count) {
     this.width = width;
     this.height = height;
     this.bomb_count = bomb_count;
-    this.field = new MineSweeperField(this.width, this.height);
+    this.field = new MineSweeperField(this.width, this.height, this);
     this.event_target = new EventTarget();
-
     this.reset();
 }
 
@@ -17,6 +16,7 @@ MineSweeperModel.prototype.reset = function () {
         c.has_bomb = false;
         c.state = MineSweeperCell.states.UNMARKED;
     });
+    this.num_marked = 0;
 
     let all_cells = [];
     this.field.forAllCells(c => {
@@ -75,9 +75,10 @@ MineSweeperModel.prototype.getCell = function (x, y) {
     return this.field.cells[x][y];
 }
 
-let MineSweeperField = function(width, height) {
+let MineSweeperField = function(width, height, ms_model) {
     this.width = width;
     this.height = height;
+    this.ms_model = ms_model;
     this.cells = [];
     for (let x = 0; x < width; x++) {
         this.cells[x] = [];
@@ -126,8 +127,10 @@ MineSweeperCell.prototype.toggleMark = function () {
     }
     if (this.isMarked()) {
         this.state = MineSweeperCell.states.UNMARKED;
+        this.field.ms_model.num_marked--;
     } else {
         this.state = MineSweeperCell.states.MARKED;
+        this.field.ms_model.num_marked++;
     }
 
     this.event_target.dispatchEvent(new Event('change'));

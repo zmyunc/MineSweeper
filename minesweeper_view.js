@@ -44,6 +44,13 @@ let MineSweeperView = function (model, controller, render_div) {
         render_div.querySelector('#elapsed_time').innerText = "0";
     })
 
+    let update_bomb_count = () => {
+        render_div.querySelector('#bomb_count').innerText = model.bomb_count - model.num_marked;
+    };
+    update_bomb_count();
+    // Update bomb count if any cells change
+    model.field.forAllCells(c => c.addEventListener('change', update_bomb_count));
+
     // Set up a getter for the div
     this.getRenderedDiv = () => render_div;
 }
