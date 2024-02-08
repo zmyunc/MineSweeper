@@ -1,5 +1,25 @@
 let MineSweeperController = function (model) {
-
+    
+    let checkForFinish = function () {
+        if (!model.gameInProgress()) {
+            return;
+        };
+    
+        let game_finished = true;
+        model.field.forAllCells(c => {
+            if (c.hasBomb() && !c.isMarked()) {
+                game_finished = false;
+            } else if (!c.hasBomb() && !c.isRevealed()) {
+                game_finished = false;
+            }
+        });
+        
+        if (game_finished) {
+            model.endGame();
+            alert('You win');
+        }
+    }
+    
     this.reveal = (x,y) => {
         // Do nothing if the game is over.
         if (model.gameFinished()) {
@@ -34,6 +54,8 @@ let MineSweeperController = function (model) {
         if (cell.getNeighborBombCount() == 0) {
             cell.getNeighbors().forEach(n => this.reveal(n.x, n.y));
         };
+
+        checkForFinish();
     }
 
     this.toggleMark = (x,y) => {
@@ -48,6 +70,8 @@ let MineSweeperController = function (model) {
         let cell = model.getCell(x,y);
 
         cell.toggleMark();
+
+        checkForFinish();
     }
 
     this.clearNeighborhood = (x,y) => {
@@ -77,6 +101,8 @@ let MineSweeperController = function (model) {
                 }
             });
         }
+
+        checkForFinish();
     }
 
     this.reset = () => {
