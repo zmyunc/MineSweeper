@@ -34,7 +34,15 @@ let MineSweeperView = function (model, controller, render_div) {
 
     model.addEventListener('end', () => {
         clearInterval(timer_interval_id);
+        render_div.querySelector('#elapsed_time').innerText = model.getElapsedTime();
     });
+
+    model.addEventListener('reset', () => {
+        if (timer_interval_id) {
+            clearInterval(timer_interval_id);
+        }
+        render_div.querySelector('#elapsed_time').innerText = "0";
+    })
 
     // Set up a getter for the div
     this.getRenderedDiv = () => render_div;

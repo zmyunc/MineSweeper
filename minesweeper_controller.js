@@ -80,6 +80,6 @@ let MineSweeperController = function (model) {
     }
 
     this.reset = () => {
-        alert(`Reset game`);
+        model.reset();
     }
 }

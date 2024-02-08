@@ -5,11 +5,18 @@ let MineSweeperModel = function (width, height, bomb_count) {
     this.height = height;
     this.bomb_count = bomb_count;
     this.field = new MineSweeperField(this.width, this.height);
-    this.start_time = null;
-    this.end_time = null;
     this.event_target = new EventTarget();
 
-    // Randomly pick bomb_count cells within the field to have bombs.
+    this.reset();
+}
+
+MineSweeperModel.prototype.reset = function () {
+    this.start_time = null;
+    this.end_time = null;
+    this.field.forAllCells(c => {
+        c.has_bomb = false;
+        c.state = MineSweeperCell.states.UNMARKED;
+    });
 
     let all_cells = [];
     this.field.forAllCells(c => {
@@ -19,6 +26,10 @@ let MineSweeperModel = function (width, height, bomb_count) {
     all_cells.sort((a,b) => a[1]-b[1])
          .slice(0,this.bomb_count)
          .forEach(c => c[0].has_bomb = true);
+
+    // Force a change event on all cells to update any observers of them
+    this.field.forAllCells(c => c.event_target.dispatchEvent(new Event('change')));
+    this.event_target.dispatchEvent(new Event('reset'));
 }
 
 MineSweeperModel.prototype.addEventListener = function () {return this.event_target.addEventListener(...arguments)};
