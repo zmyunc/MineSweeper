@@ -117,5 +117,5 @@ let MSCellView = function(x, y, model, controller, render_div) {
 
     this.getRenderedDiv = () => render_div;
 
-    cell.addChangeCallback(render);
+    cell.addEventListener('change', render);
 }
