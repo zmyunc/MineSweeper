@@ -74,12 +74,13 @@ let MSCellView = function(x, y, model, controller, render_div) {
             } else {
                 let bomb_count = cell.getNeighborBombCount();
                 if (bomb_count != 0) {
-                    render_div.innerHTML = cell.getNeighborBombCount();
-                }
-                
-                render_div.addEventListener('click', (e) => {
-                    controller.clearNeighborhood(x,y);
-                });
+                    let bomb_count_label = document.createElement('div');
+                    bomb_count_label.innerHTML = cell.getNeighborBombCount();
+                    bomb_count_label.addEventListener('click', (e) => {
+                        controller.clearNeighborhood(x,y);
+                    });
+                    render_div.append(bomb_count_label);
+                }                
             }
         } else {
             let cell_button = document.createElement('button');

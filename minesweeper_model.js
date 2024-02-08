@@ -59,6 +59,10 @@ MineSweeperCell.prototype.isMarked = function () {
     return (this.state == MineSweeperCell.states.MARKED);
 }
 
+MineSweeperCell.prototype.isUnmarked = function () {
+    return (this.state == MineSweeperCell.states.UNMARKED);
+}
+
 MineSweeperCell.prototype.toggleMark = function () {
     // Can't mark/unmark if already revealed.
     if (this.isRevealed()) {
@@ -94,22 +98,24 @@ MineSweeperCell.prototype.hasBomb = function () {
     return this.has_bomb;
 }
 
-MineSweeperCell.prototype.getNeighborBombCount = function () {
-    let count = 0;
+MineSweeperCell.prototype.getNeighbors = function () {
+    neighbors = [];
     for (let dx=-1; dx<=1; dx++) {
         for (let dy=-1; dy<=1; dy++) {
             if (dx != 0 || dy != 0) {
                 let nx = this.x + dx;
                 let ny = this.y + dy;
                 if ((nx >=0) && (nx < this.field.width) && (ny >= 0) && ny < (this.field.height)) {
-                    if (this.field.cells[nx][ny].has_bomb) {
-                        count++;
-                    }
+                    neighbors.push(this.field.cells[nx][ny]);
                 }
             }
         }
     }
-    return count;
+    return neighbors;
+}
+
+MineSweeperCell.prototype.getNeighborBombCount = function () {
+    return this.getNeighbors().reduce((bc, n) => bc += (n.hasBomb() ? 1 : 0), 0);
 }
 
 MineSweeperCell.states = {
