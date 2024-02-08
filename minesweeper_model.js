@@ -7,6 +7,7 @@ let MineSweeperModel = function (width, height, bomb_count) {
     this.field = new MineSweeperField(this.width, this.height);
     this.start_time = null;
     this.end_time = null;
+    this.event_target = new EventTarget();
 
     // Randomly pick bomb_count cells within the field to have bombs.
 
@@ -19,6 +20,9 @@ let MineSweeperModel = function (width, height, bomb_count) {
          .slice(0,this.bomb_count)
          .forEach(c => c[0].has_bomb = true);
 }
+
+MineSweeperModel.prototype.addEventListener = function () {return this.event_target.addEventListener(...arguments)};
+MineSweeperModel.prototype.removeEventListener = function () {return this.event_target.removeEventListener(...arguments)};
 
 MineSweeperModel.prototype.gameStarted = function () {
     return this.start_time != null;
@@ -35,13 +39,25 @@ MineSweeperModel.prototype.gameInProgress = function () {
 MineSweeperModel.prototype.startGame = function () {
     if (!this.gameStarted()) {
         this.start_time = new Date();
+        this.event_target.dispatchEvent(new Event("start"));
     }
 }
 
 MineSweeperModel.prototype.endGame = function () {
     if (!this.gameFinished()) {
         this.end_time = new Date();
+        this.event_target.dispatchEvent(new Event("end"));
     }
+}
+
+MineSweeperModel.prototype.getElapsedTime = function () {
+    if (this.gameInProgress()) {
+        let now = new Date();
+        return Math.floor((now.getTime() - this.start_time.getTime()) / 1000);
+    } else if (this.gameFinished()) {
+        return Math.floor((this.end_time.getTime() - this.start_time.getTime())/1000);
+    }
+    return 0;
 }
 
 MineSweeperModel.prototype.getCell = function (x, y) {

@@ -10,7 +10,7 @@ let MineSweeperView = function (model, controller, render_div) {
     render_div.innerHTML = `
     <div>
       <div>Unmarked Bombs Left: <span id="bomb_count">Unmarked bomb count goes here.</span></div>
-      <div>Time Elapsed: <span id="elapsed_time">Elapsed time goes here</span></div>
+      <div>Time Elapsed: <span id="elapsed_time">0</span></div>
       <div><button id="reset">Reset</button></div>
     </div>
     <div id="field">Minefield Goes Here</div>
@@ -21,6 +21,19 @@ let MineSweeperView = function (model, controller, render_div) {
     // Connect reset button to controller
     render_div.querySelector('#reset').addEventListener('click', () => {
         controller.reset();
+    });
+
+    // Set up timer
+    let timer_interval_id;
+
+    model.addEventListener('start', () => {
+        timer_interval_id = setInterval(() => {
+            render_div.querySelector('#elapsed_time').innerText = model.getElapsedTime();
+        }, 1000);
+    });
+
+    model.addEventListener('end', () => {
+        clearInterval(timer_interval_id);
     });
 
     // Set up a getter for the div

@@ -15,10 +15,10 @@ let MineSweeperController = function (model) {
             // Already revealed. Do nothing and return.
             return;
         }
-        
+
         cell.reveal();
 
-        // If this is a bomb, game is over. For now just put up an alert and return.
+        // If this is a bomb, game is over. 
         if (cell.hasBomb()) {
             model.field.forAllCells(c => {
                 if (c.hasBomb()) {
