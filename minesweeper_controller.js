@@ -3,7 +3,22 @@ let MineSweeperController = function (model) {
     this.reveal = (x,y) => {
         let cell = model.getCell(x,y);
 
+        if (!cell.isUnmarked()) {
+            // Either marked or already revealed. Don't do anything.
+            return;
+        }
+
         cell.reveal();
+        // If this is a bomb, game is over. For now just put up an alert and return.
+        if (cell.hasBomb()) {
+            alert('You lose!');
+            return;
+        }
+
+        // If revealing a cell with no bombs in neighborhood, reveal the neighborhood.
+        if (cell.getNeighborBombCount() == 0) {
+            cell.getNeighbors().forEach(n => this.reveal(n.x, n.y));
+        };
     }
 
     this.toggleMark = (x,y) => {
