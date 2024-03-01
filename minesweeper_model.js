@@ -21,7 +21,7 @@ MineSweeperModel.prototype.reset = function () {
     let all_cells = [];
     this.field.forAllCells(c => {
             all_cells.push([c, Math.random()]);
-    });
+    });//hello
 
     all_cells.sort((a,b) => a[1]-b[1])
          .slice(0,this.bomb_count)
