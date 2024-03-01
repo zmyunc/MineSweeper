@@ -58,7 +58,7 @@ let MineSweeperView = function (model, controller, render_div) {
 let MSFieldView = function(model, controller, render_div) {
     if (render_div == undefined) {
         render_div = document.createElement('div');
-    }
+    }//如果没有div 创建一个div
 
     render_div.innerHTML = `
     <table>
@@ -66,6 +66,7 @@ let MSFieldView = function(model, controller, render_div) {
       </tbody>
     </table>
     `;
+    //Create AN TABLE AND TABLE BODY
 
     let field_table_body = render_div.querySelector('tbody');
     for (let row=0; row < model.height; row++) {
@@ -73,6 +74,8 @@ let MSFieldView = function(model, controller, render_div) {
         for (let col=0; col<model.width; col++) {
             let cell_td = document.createElement('td');
             cell_td.classList.add('cell');
+            // DOM method After we创建完这个cell_td 可以用classList.add('指定的css 名称')来对其添加css style
+
 
             let cell_view = new MSCellView(col, row, model, controller);
             cell_td.append(cell_view.getRenderedDiv());
@@ -85,7 +88,7 @@ let MSFieldView = function(model, controller, render_div) {
     // Set up a getter for the div
     this.getRenderedDiv = () => render_div;
 
-}
+}//MSFieldView END 
 
 let MSCellView = function(x, y, model, controller, render_div) {
     if (render_div == undefined) {

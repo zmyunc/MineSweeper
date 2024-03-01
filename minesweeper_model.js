@@ -21,11 +21,12 @@ MineSweeperModel.prototype.reset = function () {
     let all_cells = [];
     this.field.forAllCells(c => {
             all_cells.push([c, Math.random()]);
-    });
+    });// 让每个cell附上random number
 
-    all_cells.sort((a,b) => a[1]-b[1])
-         .slice(0,this.bomb_count)
-         .forEach(c => c[0].has_bomb = true);
+    all_cells.sort((a,b) => a[1]-b[1])//sort
+         .slice(0,this.bomb_count)//从A到B停止
+         .forEach(c => c[0].has_bomb = true);//A到B区间的全部cell.hasboob=ture
+         
 
     // Force a change event on all cells to update any observers of them
     this.field.forAllCells(c => c.event_target.dispatchEvent(new Event('change')));
