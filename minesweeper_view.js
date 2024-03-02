@@ -68,7 +68,7 @@ let MSFieldView = function(model, controller, render_div) {
     `;
     //Create AN TABLE AND TABLE BODY
 
-    let field_table_body = render_div.querySelector('tbody');
+    let field_table_body = render_div.querySelector('tbody');//截取第一个tbody
     for (let row=0; row < model.height; row++) {
         let row_tr = document.createElement('tr');
         for (let col=0; col<model.width; col++) {

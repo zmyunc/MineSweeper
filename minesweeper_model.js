@@ -124,7 +124,7 @@ MineSweeperCell.prototype.isUnmarked = function () {
 MineSweeperCell.prototype.toggleMark = function () {
     // Can't mark/unmark if already revealed.
     if (this.isRevealed()) {
-        return;
+        return;// If revealed you can not mark cell, just return (无事发生)
     }
     if (this.isMarked()) {
         this.state = MineSweeperCell.states.UNMARKED;
@@ -168,7 +168,9 @@ MineSweeperCell.prototype.getNeighbors = function () {
 
 MineSweeperCell.prototype.getNeighborBombCount = function () {
     return this.getNeighbors().reduce((bc, n) => bc += (n.hasBomb() ? 1 : 0), 0);
-}
+                                    // bc , n 是你当即创建的 local variable 
+                                    //他们对应的input是...?
+}//By using getneighbors(), we can get the total value of that cell
 
 MineSweeperCell.states = {
     UNMARKED: 0,
